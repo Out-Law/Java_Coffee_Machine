@@ -1,8 +1,12 @@
 import java.io.Console;
+import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Interface {
     CoffeeMachine coffeeMachine = new CoffeeMachine();
+    List<String> listCoffeeText = List.of( "Espresso", "Doppio", "Ristretto", "Lungo", "Americano",
+            "Cappuccino", "Macchiato", "Latte", "Con Panna", "Vienna coffee", "Latte macchiato");
     public void start(){
         //CoffeeMachine coffeeMachine = new CoffeeMachine();
         /*System.out.println( coffeeMachine.getCoffee().toString());
@@ -66,15 +70,74 @@ public class Interface {
     }
 
 
-    private void checkIngredients() {
+    private void godMode() {
+        printMessageText(9);
+        printMessageText(7);
+        String inputName = new Scanner(System.in).nextLine();
+        if(Integer.parseInt(inputName) !=0) {
+            System.out.println("Recipe: " + coffeeMachine.getRecipe(listCoffeeText.get(Integer.parseInt(inputName) - 1)));
+        }
+
+        String inputIngredient = new Scanner(System.in).nextLine();
+        String inputBean = "2";
+        String inputMilk = "0";
+        String inputCream = "0";
+        int inputWater = 0;
+        boolean running = true;
+
+        printMessageText(10);
+
+        while (running) {
+            switch (Integer.parseInt(inputIngredient)) {
+                case 0 -> inputWater += new Scanner(System.in).nextInt();
+                case 1 -> inputBean = "3";
+                case 2 -> inputBean = "1";
+                case 3 -> inputWater += new Scanner(System.in).nextInt();
+                case 4 -> checkIngredients();
+                default -> printMessageText(2);
+            }
+        }
+
+        printMessageText(8);
+        String inputAmount = new Scanner(System.in).nextLine();
+
+        coffeeMachine.createDrink(Integer.parseInt(inputAmount), Integer.parseInt(inputBean), Integer.parseInt(inputMilk),
+                Integer.parseInt(inputCream), inputWater);
     }
 
-    private void godMode() {
+    private void checkIngredients() {
+        printMessageText(6);
 
+        printMessageText(4);
+        String input = new Scanner(System.in).nextLine();
+
+        if (Integer.parseInt(input) == 1) {
+            boolean running = true;
+
+            while (running) {
+                printMessageText(6);
+                printMessageText(5);
+                input = new Scanner(System.in).nextLine();
+
+                switch (Integer.parseInt(input)) {
+                    case 1 -> coffeeMachine.addIngredientBeanMax();
+                    case 2 -> coffeeMachine.addIngredientMilkMax();
+                    case 3 -> coffeeMachine.addIngredientCreamMax();
+                    case 4 -> coffeeMachine.addIngredientWaterMax();
+                    case 0 -> running = false;
+                    default -> printMessageText(2);
+                }
+            }
+        }
     }
 
     private void drinksMenu() {
-
+        printMessageText(7);
+        String inputName = new Scanner(System.in).nextLine();
+        printMessageText(8);
+        String inputAmount = new Scanner(System.in).nextLine();
+        coffeeMachine.createDrink(listCoffeeText.get(Integer.parseInt(inputName) - 1), Integer.parseInt(inputAmount));
     }
+
 
 }

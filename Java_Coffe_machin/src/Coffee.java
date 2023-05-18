@@ -29,4 +29,19 @@ public class Coffee {
         return volumeMilk;
     }
 
+    public int getVolumeCaffeine() {
+        return  volumeCaffeine;
+    }
+
+    public int getVolumeWater() {
+        return volumeWater;
+    }
+
+    public int getVolumeCream() {
+        return volumeCream;
+    }
+
+    public String getRecipe() {
+        return recipe;
+    }
 }

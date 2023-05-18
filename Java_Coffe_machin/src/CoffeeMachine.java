@@ -72,4 +72,100 @@ public class CoffeeMachine {
         return coffee;
     }
 
+    public void addIngredientBeanMax() {
+        coffeeBean = 1000;
+    }
+
+    public void addIngredientWaterMax() {
+        volumeWater = 1000;
+    }
+
+    public void addIngredientMilkMax() {
+        volumeMilk = 1000;
+    }
+
+    public void addIngredientCreamMax() {
+        volumeCream = 1000;
+    }
+
+    private boolean checkIngredient(int remainingIngredient, int amount, int ingredient) {
+        return remainingIngredient >= ingredient * amount;
+    }
+
+    private void spendingIngredient(int _coffeeBean, int _volumeWater, int _volumeMilk, int _volumeCream) {
+        coffeeBean -= _coffeeBean;
+        volumeWater -= _volumeWater;
+        volumeMilk -= _volumeMilk;
+        volumeCream -= _volumeCream;
+        state -= 1;
+    }
+
+    private void machineCleaning() {
+        volumeWater -= 20;
+        System.out.println("Coffee machine is being cleaned!");
+        state = 10;
+        doWork("cleaned");
+    }
+
+    public void createDrink(String name, int amount) {
+        if(checkIngredient(coffeeBean, amount, coffee.get(name).getVolumeCaffeine()) &&
+                checkIngredient(volumeWater, amount, coffee.get(name).getVolumeWater()) &&
+                checkIngredient(volumeMilk, amount, coffee.get(name).getVolumeMilk()) &&
+                checkIngredient(volumeCream, amount, coffee.get(name).getVolumeCream())) {
+
+            for (int i = 1; i <= amount; i++) {
+                if(state <= 0) {
+                    machineCleaning();
+                }
+                System.out.println("All right!");
+                spendingIngredient(coffee.get(name).getVolumeCaffeine(), coffee.get(name).getVolumeWater(),
+                        coffee.get(name).getVolumeMilk(), coffee.get(name).getVolumeCream());
+                doWork(name);
+                System.out.println(i + " : " + name + "\n");
+            }
+        }
+        else {
+            System.out.println("NO INGREDIENT!");
+        }
+    }
+
+    public void createDrink(int amount, int _coffeeBean, int _volumeWater, int _volumeMilk, int _volumeCream) {
+        if(checkIngredient(coffeeBean, amount, _coffeeBean) &&
+                checkIngredient(volumeWater, amount, _volumeWater) &&
+                checkIngredient(volumeMilk, amount, _volumeMilk) &&
+                checkIngredient(volumeCream, amount, _volumeCream)) {
+
+            for (int i = 1; i <= amount; i++) {
+                if(state <= 0) {
+                    machineCleaning();
+                }
+                System.out.println("All right!");
+                spendingIngredient(_coffeeBean, _volumeWater, _volumeMilk, _volumeCream);
+                doWork("Your drink");
+                System.out.println(i + " : Your drink\n");
+            }
+        }
+        else {
+            System.out.println("NO INGREDIENT!");
+        }
+    }
+    
+    public String getRecipe(String name) {
+        return coffee.get(name).getRecipe();
+    }
+
+    private void doWork(String name) {
+        System.out.println("Please wait :)\nGoing on " + name + "\nDrrrr");
+        for (int i = 0; i <= 3; i++) {
+            try {
+                Thread.sleep(1000);
+                System.out.print(".");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.print("\n");
+    }
+
+
 }
